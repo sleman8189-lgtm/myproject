@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#0d141c">
+<link rel="manifest" href="manifest.json">
+<link rel="apple-touch-icon" href="icon-180.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="راصد">
+<title>راصد جامعة تبوك</title>
+<style>
+:root{--bg:#0d141c;--card:#15212b;--line:#22323f;--acc:#4cc3e0;--txt:#e8f0f5;--mut:#8a9aa6;--g:#3ecf7a;--y:#e6b34a;--o:#f28c3c;--r:#f0665e}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+body{margin:0;background:var(--bg);color:var(--txt);font-family:"Segoe UI",Tahoma,Arial,sans-serif;padding-bottom:84px}
+header{position:sticky;top:0;z-index:20;background:var(--bg);border-bottom:1px solid var(--line);padding:14px 16px;display:flex;align-items:center;justify-content:space-between}
+header h1{margin:0;font-size:17px}
+header .tag{background:var(--acc);color:#04222a;border-radius:20px;padding:3px 12px;font-size:12px;font-weight:700}
+main{padding:14px 16px;max-width:760px;margin:auto}
+.tab{display:none}.tab.on{display:block}
+h2{font-size:15px;color:var(--mut);margin:20px 0 8px;font-weight:600}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:14px}
+.drop{border:2px dashed var(--acc);border-radius:20px;background:var(--card);text-align:center;padding:26px 12px;cursor:pointer;position:relative;overflow:hidden}
+.drop svg{width:44px;height:44px;stroke:var(--acc)}
+.drop b{display:block;font-size:20px;margin:8px 0 4px}
+.drop small{color:var(--mut)}
+.drop img{width:100%;max-height:320px;object-fit:cover;border-radius:14px;display:block}
+.link{color:var(--acc);text-decoration:underline;background:none;border:0;font:inherit;cursor:pointer;padding:6px}
+input,select,textarea{width:100%;background:#0d141c;color:var(--txt);border:1px solid var(--line);border-radius:12px;padding:12px;font:inherit;font-size:15px}
+textarea{min-height:90px;resize:vertical}
+label{display:block;color:var(--mut);font-size:13px;margin:10px 0 6px}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.opt{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 12px;cursor:pointer;font-size:14px;text-align:right;color:var(--txt);font-family:inherit}
+.opt.sel{border-color:var(--acc);background:#1a2f3b;box-shadow:0 0 0 1px var(--acc) inset}
+.opt small{display:block;color:var(--mut);margin-top:4px;font-size:12px}
+.dot{display:inline-block;width:10px;height:10px;border-radius:50%;margin-left:6px}
+.btn{width:100%;border:0;border-radius:14px;padding:15px;font:inherit;font-size:17px;font-weight:700;background:var(--acc);color:#04222a;cursor:pointer}
+.btn:disabled{background:#2a5f6c;color:#0c2a33;cursor:not-allowed}
+.btn.sec{background:var(--card);color:var(--txt);border:1px solid var(--line);font-size:14px;padding:11px}
+.btn.sm{width:auto;padding:9px 14px;font-size:13px}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
+.row>*{flex:1}
+.hint{color:var(--mut);font-size:13px;text-align:center;margin:10px 0}
+.loc-st{font-size:13px;color:var(--mut);margin-bottom:6px}
+.loc-st.ok{color:var(--g)}.loc-st.bad{color:var(--r)}
+nav{position:fixed;bottom:0;inset-inline:0;background:var(--bg);border-top:1px solid var(--line);display:flex;padding:6px 4px calc(6px + env(safe-area-inset-bottom));z-index:30}
+nav button{flex:1;background:none;border:0;color:var(--mut);font:inherit;font-size:11px;padding:6px 2px;cursor:pointer;display:flex;flex-direction:column;align-items:center;gap:3px;position:relative}
+nav button.on{color:var(--acc)}
+nav svg{width:22px;height:22px;stroke:currentColor;fill:none;stroke-width:1.8}
+nav .n{position:absolute;top:0;right:22%;background:var(--acc);color:#04222a;border-radius:10px;font-size:10px;padding:0 5px;font-weight:700}
+.item{display:flex;gap:12px;margin-bottom:10px}
+.item img{width:84px;height:84px;object-fit:cover;border-radius:12px;flex:none}
+.item .t{font-weight:700;font-size:15px}
+.item .m{color:var(--mut);font-size:12.5px;margin-top:3px}
+.item .a{margin-top:6px;display:flex;gap:6px}
+.item .a a,.item .a button{font-size:12px;color:var(--acc);background:none;border:1px solid var(--line);border-radius:8px;padding:4px 9px;text-decoration:none;font-family:inherit;cursor:pointer}
+.kpis{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}
+.kpi{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:12px 4px;text-align:center}
+.kpi b{font-size:22px;display:block}.kpi span{font-size:11px;color:var(--mut)}
+.bar{margin:8px 0}.bar .l{display:flex;justify-content:space-between;font-size:13px;margin-bottom:4px}
+.bar .tr{height:9px;background:#0d141c;border-radius:6px;overflow:hidden}.bar .fi{height:100%;background:var(--acc);border-radius:6px}
+#map{height:300px;border-radius:16px;border:1px solid var(--line)}
+.insight{background:#1a2f3b;border-radius:12px;padding:10px 12px;font-size:13.5px;line-height:1.8;margin-top:8px}
+.paper{background:#fff;color:#111;border-radius:8px;padding:22px;margin-top:12px;overflow:auto;font-family:Arial,Tahoma,sans-serif}
+#toast{position:fixed;bottom:96px;left:50%;transform:translateX(-50%);background:#000c;color:#fff;padding:10px 18px;border-radius:20px;font-size:14px;opacity:0;transition:.3s;pointer-events:none;z-index:99}
+#toast.on{opacity:1}
+@media print{body>*:not(#printArea){display:none!important}#printArea{display:block!important}body{background:#fff;padding:0}}
+#printArea{display:none}
+</style>
+</head>
+<body>
+<header><h1>راصد جامعة تبوك</h1><span class="tag">المالك</span></header>
+<main>
+
+<!-- بلاغ جديد -->
+<section class="tab on" id="t-new">
+  <label class="drop" id="drop">
+    <input type="file" id="file" accept="image/*" capture="environment" hidden>
+    <div id="dropInner">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.6"><path d="M3 8h3l2-3h8l2 3h3v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg>
+      <b>التقط صورة المخالفة</b><small>يُحدَّد الموقع تلقائيًا عند التقاط الصورة</small>
+    </div>
+  </label>
+  <div style="text-align:center"><button class="link" onclick="pickGallery()">أو اختر صورة من المعرض</button></div>
+  <input type="file" id="fileG" accept="image/*" hidden>
+
+  <h2>الموقع</h2>
+  <div class="card">
+    <div class="loc-st" id="locSt">لم يُحدَّد الموقع بعد</div>
+    <div class="row" style="margin-bottom:6px">
+      <button class="btn sec sm" onclick="locate()">📍 تحديد موقعي الآن</button>
+      <button class="btn sec sm" onclick="savePlaceHere()">⭐ حفظ كموقع مسمّى</button>
+    </div>
+    <label>المبنى أو المنطقة</label>
+    <input id="place" list="placeList" placeholder="مثال: كلية الهندسة، موقف رقم 3" oninput="autoName=false;chk()">
+    <datalist id="placeList"></datalist>
+    <button class="link" onclick="document.getElementById('manual').hidden=!document.getElementById('manual').hidden">◂ إدخال الإحداثيات يدويًا</button>
+    <div id="manual" hidden><input id="manCoords" dir="ltr" placeholder="28.3900, 36.5700 (الصق من خرائط قوقل)" onchange="setManual()"></div>
+  </div>
+
+  <h2>نوع المخالفة</h2>
+  <div class="grid" id="types"></div>
+  <h2>درجة الضرر</h2>
+  <div class="grid" id="sevs"></div>
+  <h2>ملاحظات</h2>
+  <textarea id="notes" placeholder="تفاصيل إضافية (اختياري)"></textarea>
+  <div class="hint" id="remain"></div>
+  <button class="btn" id="submit" onclick="submitReport()" disabled>إرسال البلاغ</button>
+</section>
+
+<!-- السجل -->
+<section class="tab" id="t-log">
+  <div class="row" style="margin-top:6px">
+    <select id="logRange" onchange="renderLog()"><option value="today">اليوم</option><option value="7">آخر 7 أيام</option><option value="all">الكل</option></select>
+    <input id="logQ" placeholder="بحث في الموقع أو النوع" oninput="renderLog()">
+  </div>
+  <div id="logList" style="margin-top:12px"></div>
+</section>
+
+<!-- التقرير -->
+<section class="tab" id="t-rep">
+  <h2>التقرير اليومي الرسمي</h2>
+  <div class="card">
+    <label style="margin-top:0">تاريخ التقرير</label>
+    <input type="date" id="repDate" onchange="renderReport()">
+    <div class="row" style="margin-top:12px">
+      <button class="btn sec" onclick="printReport()">🖨️ طباعة / PDF</button>
+      <button class="btn sec" onclick="copySummary()">📋 نسخ ملخص</button>
+    </div>
+  </div>
+  <div id="repPreview" class="paper"></div>
+</section>
+
+<!-- التحليل -->
+<section class="tab" id="t-an">
+  <div class="row" style="margin-top:6px">
+    <select id="anRange" onchange="renderAnalysis()"><option value="today">اليوم</option><option value="7" selected>آخر 7 أيام</option><option value="30">آخر 30 يومًا</option><option value="all">الكل</option></select>
+  </div>
+  <div id="anBody"></div>
+</section>
+
+<!-- المواقع -->
+<section class="tab" id="t-pl">
+  <h2>إضافة موقع مسمّى</h2>
+  <div class="card">
+    <label style="margin-top:0">اسم الموقع</label><input id="plName" placeholder="مثال: كلية الهندسة - المدخل الرئيسي">
+    <label>الإحداثيات</label><input id="plCoords" dir="ltr" placeholder="28.3900, 36.5700">
+    <label>نصف قطر المطابقة (متر)</label><input id="plR" type="number" value="80">
+    <div class="row" style="margin-top:12px">
+      <button class="btn sec" onclick="plHere()">📍 موقعي الحالي</button>
+      <button class="btn sec" onclick="plAdd()">➕ إضافة</button>
+    </div>
+    <div class="hint" style="text-align:right">عند التصوير يقترح التطبيق اسم أقرب موقع محفوظ تلقائيًا.</div>
+  </div>
+  <h2>المواقع المحفوظة</h2>
+  <div id="plList"></div>
+
+  <h2>إعدادات رأس التقرير</h2>
+  <div class="card">
+    <label style="margin-top:0">الجامعة</label><input id="setUni" onchange="saveSet()">
+    <label>الإدارة</label><input id="setDept" onchange="saveSet()">
+    <label>الموقع العام في التقرير</label><input id="setSite" onchange="saveSet()">
+  </div>
+
+  <h2>نسخ احتياطي</h2>
+  <div class="row">
+    <button class="btn sec" onclick="exportBackup()">⬇️ تصدير</button>
+    <button class="btn sec" onclick="document.getElementById('imp').click()">⬆️ استيراد</button>
+    <input type="file" id="imp" accept=".json" hidden onchange="importBackup(this)">
+  </div>
+</section>
+</main>
+
+<nav>
+  <button data-t="new" class="on"><svg viewBox="0 0 24 24"><path d="M3 8h3l2-3h8l2 3h3v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg>بلاغ جديد</button>
+  <button data-t="log"><svg viewBox="0 0 24 24"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>السجل<span class="n" id="nLog">0</span></button>
+  <button data-t="rep"><svg viewBox="0 0 24 24"><path d="M6 3h9l4 4v14H6z"/><path d="M14 3v5h5M9 13h7M9 17h7"/></svg>التقرير</button>
+  <button data-t="an"><svg viewBox="0 0 24 24"><path d="M4 20V10M10 20V4M16 20v-8M22 20H2"/></svg>التحليل</button>
+  <button data-t="pl"><svg viewBox="0 0 24 24"><path d="M12 21s7-6.5 7-12a7 7 0 10-14 0c0 5.5 7 12 7 12z"/><circle cx="12" cy="9" r="2.5"/></svg>المواقع</button>
+</nav>
+<div id="toast"></div>
+<div id="printArea"></div>
+
+<script>
+/* ---------- بيانات ثابتة ---------- */
+const TYPES=[
+ {id:'park',label:'وقوف خاطئ أو إعاقة مسار',sys:'مواقف السيارات وممرات الحركة',imp:'إعاقة حركة المشاة والمركبات وتعطيل مسارات الطوارئ والوصول.'},
+ {id:'graf',label:'تخريب أو كتابة على الجدران',sys:'واجهات المباني والجدران الخارجية',imp:'تشوّه بصري وتضرر طبقات التشطيب، ويتطلب تنظيفًا أو إعادة دهان.'},
+ {id:'furn',label:'كسر أو تلف في المرافق والأثاث',sys:'المرافق العامة والأثاث الثابت والمتحرك',imp:'خروج العنصر من الخدمة وخطر إصابة المستخدمين وارتفاع تكلفة الاستبدال.'},
+ {id:'waste',label:'نفايات ومخلفات متروكة',sys:'النظافة العامة وإدارة المخلفات',imp:'مظهر غير منظم وتجمع حشرات وروائح، وقد تعيق تصريف مياه الأمطار.'},
+ {id:'leak',label:'تسرب مياه أو خلل كهربائي',sys:'شبكات الصرف والمياه والتمديدات الكهربائية',imp:'خطر تلف المنشآت أو صعق كهربائي وانزلاق، ويستدعي معالجة عاجلة.'},
+ {id:'safe',label:'مخالفة سلامة: مخرج طوارئ أو ممر مسدود',sys:'أنظمة السلامة ومخارج الطوارئ',imp:'تعطيل الإخلاء في الطوارئ وخطر مباشر على السلامة العامة.'},
+ {id:'smoke',label:'تدخين في مكان ممنوع',sys:'الأماكن المغلقة والمرافق العامة',imp:'مخالفة أنظمة السلامة والصحة العامة، وخطر حريق وتلوث هواء.'},
+ {id:'green',label:'إتلاف المسطحات والأشجار',sys:'المسطحات الخضراء وأعمال التشجير',imp:'تدهور الغطاء النباتي وزيادة تكاليف الصيانة وتراجع المظهر العام.'},
+ {id:'other',label:'مخالفة أخرى',sys:'مرافق المدينة الجامعية',imp:'تتطلب تقييمًا فنيًا ميدانيًا لتحديد الأثر بدقة.'}
+];
+const SEVS=[
+ {id:'none',label:'لا ضرر',desc:'مخالفة دون تلف',c:'#3ecf7a',imp:0,txt:'دون ضرر ظاهر'},
+ {id:'minor',label:'بسيط',desc:'تلف سطحي يُعالج بسرعة',c:'#e6b34a',imp:0,txt:'ضرر بسيط'},
+ {id:'medium',label:'متوسط',desc:'يحتاج صيانة أو استبدال',c:'#f28c3c',imp:1,txt:'ضرر متوسط'},
+ {id:'severe',label:'جسيم',desc:'خطر على السلامة أو تلف كبير',c:'#f0665e',imp:2,txt:'ضرر جسيم'}
+];
+const IMPN=['منخفضة','متوسطة','عالية الأهمية'];
+const MONTHS=['يناير','فبراير','مارس','أبريل','مايو','يونيو','يوليو','أغسطس','سبتمبر','أكتوبر','نوفمبر','ديسمبر'];
+const T=id=>TYPES.find(x=>x.id===id)||TYPES[8], S=id=>SEVS.find(x=>x.id===id)||SEVS[0];
+const $=id=>document.getElementById(id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+/* ---------- تخزين ---------- */
+const dbp=new Promise((res,rej)=>{const r=indexedDB.open('rased',1);r.onupgradeneeded=()=>r.result.createObjectStore('reports',{keyPath:'id'});r.onsuccess=()=>res(r.result);r.onerror=()=>rej(r.error)});
+async function tx(mode,fn){const db=await dbp;return new Promise((res,rej)=>{const t=db.transaction('reports',mode);const rq=fn(t.objectStore('reports'));t.oncomplete=()=>res(rq&&rq.result);t.onerror=()=>rej(t.error)})}
+let R=[];
+const load=async()=>{R=(await tx('readonly',s=>s.getAll())).sort((a,b)=>b.ts-a.ts);$('nLog').textContent=R.length};
+const ls=(k,d)=>{try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}};
+let places=ls('rased_places',[]);
+let SET=Object.assign({uni:'جامعة تبوك',dept:'الإدارة العامة للشؤون الهندسية',site:'المرافق العامة والخارجية لمباني المدينة الجامعية - جامعة تبوك'},ls('rased_set',{}));
+
+/* ---------- أدوات ---------- */
+function toast(m){const t=$('toast');t.textContent=m;t.classList.add('on');setTimeout(()=>t.classList.remove('on'),2200)}
+const pad=n=>String(n).padStart(2,'0');
+const dayKey=ts=>{const d=new Date(ts);return d.getFullYear()+'-'+pad(d.getMonth()+1)+'-'+pad(d.getDate())};
+const arDate=k=>{const [y,m,d]=k.split('-');return +d+' '+MONTHS[+m-1]+' '+y+'م'};
+const timeStr=ts=>new Date(ts).toLocaleTimeString('ar-SA',{hour:'2-digit',minute:'2-digit'});
+function dist(a,b,c,d){const R=6371000,t=x=>x*Math.PI/180,dl=t(c-a),dg=t(d-b);const h=Math.sin(dl/2)**2+Math.cos(t(a))*Math.cos(t(c))*Math.sin(dg/2)**2;return 2*R*Math.asin(Math.sqrt(h))}
+function nearest(lat,lng){let best=null,bd=1e9;places.forEach(p=>{const d=dist(lat,lng,p.lat,p.lng);if(d<=(p.r||80)&&d<bd){bd=d;best=p}});return best}
+function parseCoords(s){const m=String(s).match(/(-?\d+(?:\.\d+)?)\s*[,،\s]\s*(-?\d+(?:\.\d+)?)/);if(!m)return null;const a=+m[1],b=+m[2];return Math.abs(a)<=90&&Math.abs(b)<=180?{lat:a,lng:b}:null}
+const mapsUrl=r=>r.lat!=null?`https://www.google.com/maps?q=${r.lat},${r.lng}`:'';
+function compress(file){return new Promise((res,rej)=>{const img=new Image(),u=URL.createObjectURL(file);img.onload=()=>{const M=1280,k=Math.min(1,M/Math.max(img.width,img.height));const c=document.createElement('canvas');c.width=img.width*k;c.height=img.height*k;c.getContext('2d').drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(u);res(c.toDataURL('image/jpeg',.75))};img.onerror=rej;img.src=u})}
+
+/* ---------- تبويبات ---------- */
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>go(b.dataset.t));
+function go(t){document.querySelectorAll('nav button').forEach(b=>b.classList.toggle('on',b.dataset.t===t));document.querySelectorAll('.tab').forEach(s=>s.classList.toggle('on',s.id==='t-'+t));window.scrollTo(0,0);
+ if(t==='log')renderLog();if(t==='rep')renderReport();if(t==='an')renderAnalysis();if(t==='pl')renderPlaces()}
+
+/* ---------- بلاغ جديد ---------- */
+let photo=null,cur=null,selType=null,selSev=null,autoName=true;
+$('types').innerHTML=TYPES.map(t=>`<button class="opt" data-id="${t.id}" onclick="pickType('${t.id}')">${t.label}</button>`).join('');
+$('sevs').innerHTML=SEVS.map(s=>`<button class="opt" data-id="${s.id}" onclick="pickSev('${s.id}')"><span class="dot" style="background:${s.c}"></span><b>${s.label}</b><small>${s.desc}</small></button>`).join('');
+function pickType(id){selType=id;document.querySelectorAll('#types .opt').forEach(b=>b.classList.toggle('sel',b.dataset.id===id));chk()}
+function pickSev(id){selSev=id;document.querySelectorAll('#sevs .opt').forEach(b=>b.classList.toggle('sel',b.dataset.id===id));chk()}
+function pickGallery(){$('fileG').click()}
+async function onPhoto(f,fromCamera){if(!f)return;try{photo=await compress(f)}catch{toast('تعذّر قراءة الصورة');return}
+ $('dropInner').innerHTML=`<img src="${photo}">`;chk();if(fromCamera||!cur)locate()}
+$('file').onchange=e=>onPhoto(e.target.files[0],true);
+$('fileG').onchange=e=>onPhoto(e.target.files[0],false);
+
+function setLocStatus(msg,cls){const e=$('locSt');e.textContent=msg;e.className='loc-st '+(cls||'')}
+function locate(){
+ if(!navigator.geolocation){setLocStatus('المتصفح لا يدعم تحديد الموقع، أدخل الإحداثيات يدويًا','bad');return}
+ setLocStatus('جارٍ تحديد الموقع…');
+ navigator.geolocation.getCurrentPosition(p=>{
+  cur={lat:+p.coords.latitude.toFixed(6),lng:+p.coords.longitude.toFixed(6),acc:Math.round(p.coords.accuracy)};
+  const n=nearest(cur.lat,cur.lng);
+  if(n&&(autoName||!$('place').value)){ $('place').value=n.name;autoName=true }
+  setLocStatus(`✓ ${cur.lat}, ${cur.lng} — الدقة ±${cur.acc} م${n?' — '+n.name:''}`,'ok');chk();
+ },e=>setLocStatus('تعذّر تحديد الموقع ('+(e.code===1?'الإذن مرفوض':'إشارة ضعيفة')+'). أدخل الإحداثيات يدويًا أو اكتب اسم المكان.','bad'),
+ {enableHighAccuracy:true,timeout:12000,maximumAge:0});
+}
+function setManual(){const c=parseCoords($('manCoords').value);if(!c){toast('صيغة الإحداثيات غير صحيحة');return}
+ cur={lat:c.lat,lng:c.lng,acc:0,manual:true};const n=nearest(c.lat,c.lng);if(n&&!$('place').value){$('place').value=n.name;autoName=true}
+ setLocStatus(`✓ ${c.lat}, ${c.lng} (يدوي)${n?' — '+n.name:''}`,'ok');chk()}
+function savePlaceHere(){const name=$('place').value.trim();if(!cur||!name){toast('حدّد الموقع واكتب الاسم أولًا');return}
+ places.push({id:Date.now(),name,lat:cur.lat,lng:cur.lng,r:80});savePlaces();toast('تم حفظ الموقع')}
+function chk(){const miss=[];if(!photo)miss.push('أضف صورة');if(!cur&&!$('place').value.trim())miss.push('حدّد الموقع');if(!selType)miss.push('اختر نوع المخالفة');if(!selSev)miss.push('اختر درجة الضرر');
+ $('remain').textContent=miss.length?'المتبقي: '+miss.join('، '):'جاهز للإرسال';$('submit').disabled=!!miss.length}
+async function submitReport(){
+ const r={id:Date.now(),ts:Date.now(),photo,lat:cur?cur.lat:null,lng:cur?cur.lng:null,acc:cur?cur.acc:null,place:$('place').value.trim()||'موقع غير مسمّى',type:selType,sev:selSev,notes:$('notes').value.trim()};
+ await tx('readwrite',s=>s.put(r));await load();
+ photo=null;cur=null;selType=null;selSev=null;autoName=true;$('notes').value='';$('place').value='';$('manCoords').value='';
+ $('dropInner').innerHTML=`<svg viewBox="0 0 24 24" fill="none" stroke-width="1.6" style="width:44px;height:44px;stroke:var(--acc)"><path d="M3 8h3l2-3h8l2 3h3v11H3z"/><circle cx="12" cy="13" r="3.5"/></svg><b style="display:block;font-size:20px;margin:8px 0 4px">التقط صورة المخالفة</b><small style="color:var(--mut)">يُحدَّد الموقع تلقائيًا عند التقاط الصورة</small>`;
+ document.querySelectorAll('.opt').forEach(b=>b.classList.remove('sel'));setLocStatus('لم يُحدَّد الموقع بعد');chk();toast('✓ تم حفظ البلاغ')}
+
+/* ---------- السجل ---------- */
+function inRange(r,rg){if(rg==='all')return true;const now=Date.now();if(rg==='today')return dayKey(r.ts)===dayKey(now);return r.ts>=now-(+rg)*864e5}
+function renderLog(){
+ const rg=$('logRange').value,q=$('logQ').value.trim();
+ const L=R.filter(r=>inRange(r,rg)&&(!q||(r.place+T(r.type).label).includes(q)));
+ $('logList').innerHTML=L.length?L.map(r=>`<div class="card item"><img src="${r.photo}"><div style="flex:1"><div class="t"><span class="dot" style="background:${S(r.sev).c}"></span>${T(r.type).label}</div>
+ <div class="m">📍 ${esc(r.place)}</div><div class="m">${arDate(dayKey(r.ts))} — ${timeStr(r.ts)} — ${S(r.sev).label}</div>${r.notes?`<div class="m">${esc(r.notes)}</div>`:''}
+ <div class="a">${r.lat!=null?`<a href="${mapsUrl(r)}" target="_blank">الخريطة</a>`:''}<button onclick="delReport(${r.id})">حذف</button></div></div></div>`).join(''):'<div class="hint">لا توجد بلاغات في هذه الفترة</div>'}
+async function delReport(id){if(!confirm('حذف هذا البلاغ؟'))return;await tx('readwrite',s=>s.delete(id));await load();renderLog()}
+
+/* ---------- التقرير الرسمي ---------- */
+const TH='background:#1d6b73;color:#fff;padding:6px 10px;font-weight:bold;width:150px;border:1px solid #000;text-align:right';
+const TD='padding:6px 10px;border:1px solid #000;text-align:right';
+function classify(L){const v=L.map(r=>S(r.sev).imp);const a=Math.min(...v),b=Math.max(...v);return a===b?IMPN[a]:IMPN[a]+' إلى '+IMPN[b]}
+function reportHTML(day){
+ const L=R.filter(r=>dayKey(r.ts)===day).sort((a,b)=>a.ts-b.ts);
+ if(!L.length)return null;
+ const cnt={};L.forEach(r=>cnt[r.type]=(cnt[r.type]||0)+1);
+ const top=Object.entries(cnt).sort((a,b)=>b[1]-a[1]).slice(0,4).map(([k,v])=>T(k).label+(v>1?` (${v})`:'')).join('، ');
+ const nPl=new Set(L.map(r=>r.place)).size;
+ const severe=L.filter(r=>r.sev==='severe').length;
+ let h=`<div dir="rtl" style="font-family:Arial,Tahoma,sans-serif;color:#111;line-height:1.9">
+ <div style="text-align:center"><div style="font-size:22px;font-weight:bold">${esc(SET.uni)}</div><div style="font-size:16px;font-weight:bold">${esc(SET.dept)}</div></div>
+ <h3 style="text-align:center;margin:22px 0 14px">بشأن رصد الملاحظات الفنية على ${esc(SET.site.split(' - ')[0])}</h3>
+ <table style="border-collapse:collapse;width:60%;font-size:13px">
+  <tr><td style="${TH}">الموقع</td><td style="${TD}">${esc(SET.site)}</td></tr>
+  <tr><td style="${TH}">تاريخ إعداد التقرير</td><td style="${TD}">${arDate(day)}</td></tr>
+  <tr><td style="${TH}">التصنيف العام للحالة</td><td style="${TD}">${classify(L)}</td></tr>
+  <tr><td style="${TH}">عدد الملاحظات الرئيسة</td><td style="${TD}">${L.length} ملاحظة فنية موثقة بالصور</td></tr>
+  <tr><td style="${TH}">حالة التقرير</td><td style="${TD}">تقييم بصري أولي يستلزم التحقق الميداني عند الحاجة</td></tr>
+ </table>
+ <hr style="border:0;border-top:1px solid #1d6b73;margin:20px 0">
+ <p>استناداً إلى الصور والملاحظات المرصودة، يتضح أن الحالة لا تقتصر على ملاحظة منفردة أو موقع واحد، بل تشمل ${L.length} ${L.length>10?'ملاحظة':'ملاحظات'} موزعة على ${nPl} ${nPl>10?'موقعًا':'مواقع'}، ومن أبرزها: ${esc(top)}.${severe?` وتتضمن ${severe} ${severe>1?'ملاحظات':'ملاحظة'} بدرجة ضرر جسيم تستوجب المعالجة العاجلة.`:''}</p>
+ <p>ويستدعي النظر إلى هذه الحالات كمؤشرات مترابطة عند إجراء الفحص الفني الميداني، دون الجزم بعلاقة سببية بينها قبل إجراء التحقق اللازم.</p>
+ <hr style="border:0;border-top:1px solid #1d6b73;margin:20px 0">`;
+ L.forEach((r,i)=>{const t=T(r.type),s=S(r.sev);
+  h+=`<div style="page-break-inside:avoid;margin-bottom:26px">
+  <div style="font-weight:bold;font-size:15px">الملاحظة ${i+1}: ${t.label} — ${esc(r.place)}</div>
+  <div style="font-weight:bold;margin-top:4px">الوصف الفني:</div>
+  <p style="margin:2px 0">وفق الإفادة الميدانية والصور المرفقة، رُصدت مخالفة (${t.label}) في (${esc(r.place)}) بتاريخ ${arDate(dayKey(r.ts))} الساعة ${timeStr(r.ts)}، بدرجة ${s.txt}.${r.notes?' '+esc(r.notes):''}</p>
+  <img src="${r.photo}" style="width:300px;max-width:100%;border:1px solid #ccc;margin-top:6px"><div style="font-style:italic;color:#555;font-size:12px;text-align:center;width:300px">صور توثيقية للملاحظة المرصودة ميدانياً</div>
+  <table style="border-collapse:collapse;width:60%;font-size:13px;margin-top:8px">
+   <tr><td style="${TH}">النظام المتأثر</td><td style="${TD}">${t.sys}</td></tr>
+   <tr><td style="${TH}">الأثر الفني المحتمل</td><td style="${TD}">${t.imp}</td></tr>
+   <tr><td style="${TH}">درجة الضرر</td><td style="${TD}">${s.label} — ${s.desc}</td></tr>
+   <tr><td style="${TH}">الإحداثيات</td><td style="${TD}" dir="ltr">${r.lat!=null?`<a href="${mapsUrl(r)}">${r.lat}, ${r.lng}</a>`:'غير متوفرة'}</td></tr>
+  </table></div>`});
+ return h+'</div>'}
+function renderReport(){
+ if(!$('repDate').value)$('repDate').value=dayKey(Date.now());
+ const h=reportHTML($('repDate').value);
+ $('repPreview').innerHTML=h||'<div style="text-align:center;color:#666;padding:30px">لا توجد بلاغات في هذا اليوم</div>'}
+function printReport(){const h=reportHTML($('repDate').value);if(!h){toast('لا توجد بلاغات في هذا اليوم');return}
+ $('printArea').innerHTML=h;setTimeout(()=>window.print(),150)}
+function downloadWord(){const day=$('repDate').value,h=reportHTML(day);if(!h){toast('لا توجد بلاغات في هذا اليوم');return}
+ const doc='\ufeff<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>تقرير</title></head><body dir="rtl">'+h+'</body></html>';
+ const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([doc],{type:'application/msword'}));a.download='تقرير_ملاحظات_'+day+'.doc';a.click()}
+function copySummary(){const day=$('repDate').value,L=R.filter(r=>dayKey(r.ts)===day);if(!L.length){toast('لا توجد بلاغات');return}
+ const txt=`${SET.uni} - ${SET.dept}\nملخص الملاحظات — ${arDate(day)}\nالعدد: ${L.length} | التصنيف: ${classify(L)}\n\n`+L.map((r,i)=>`${i+1}) ${T(r.type).label} — ${r.place} — ${S(r.sev).label}${r.lat!=null?'\n'+mapsUrl(r):''}`).join('\n');
+ navigator.clipboard.writeText(txt).then(()=>toast('تم نسخ الملخص'),()=>toast('تعذّر النسخ'))}
+
+/* ---------- التحليل ---------- */
+function bars(obj,total,color){return Object.entries(obj).sort((a,b)=>b[1]-a[1]).map(([k,v])=>`<div class="bar"><div class="l"><span>${k}</span><b>${v}</b></div><div class="tr"><div class="fi" style="width:${v/total*100}%;${color?'background:'+color:''}"></div></div></div>`).join('')}
+function renderAnalysis(){
+ const L=R.filter(r=>inRange(r,$('anRange').value));
+ if(!L.length){$('anBody').innerHTML='<div class="hint" style="margin-top:30px">لا توجد بيانات في هذه الفترة</div>';return}
+ const bt={},bs={},bp={};L.forEach(r=>{bt[T(r.type).label]=(bt[T(r.type).label]||0)+1;bs[r.sev]=(bs[r.sev]||0)+1;bp[r.place]=(bp[r.place]||0)+1});
+ const topT=Object.entries(bt).sort((a,b)=>b[1]-a[1])[0],topP=Object.entries(bp).sort((a,b)=>b[1]-a[1])[0];
+ const days=new Set(L.map(r=>dayKey(r.ts))).size;
+ let ins=`أكثر المخالفات تكرارًا: <b>${topT[0]}</b> (${topT[1]} من ${L.length}).<br>أكثر المواقع تسجيلًا للملاحظات: <b>${esc(topP[0])}</b> (${topP[1]}).`;
+ if(bs.severe)ins+=`<br>⚠️ يوجد <b>${bs.severe}</b> بلاغ بدرجة ضرر جسيم يحتاج معالجة عاجلة.`;
+ if(topP[1]>=3)ins+=`<br>💡 تكرار الملاحظات في «${esc(topP[0])}» قد يشير إلى مشكلة نظامية تستحق فحصًا ميدانيًا شاملًا.`;
+ ins+=`<br>متوسط البلاغات اليومي: ${(L.length/days).toFixed(1)}`;
+ $('anBody').innerHTML=`<h2>ملخص</h2><div class="kpis"><div class="kpi"><b>${L.length}</b><span>بلاغ</span></div><div class="kpi"><b style="color:var(--r)">${bs.severe||0}</b><span>جسيم</span></div><div class="kpi"><b style="color:var(--o)">${bs.medium||0}</b><span>متوسط</span></div><div class="kpi"><b>${Object.keys(bp).length}</b><span>موقع</span></div></div>
+ <div class="insight">${ins}</div>
+ <h2>حسب درجة الضرر</h2><div class="card">${SEVS.map(s=>`<div class="bar"><div class="l"><span><span class="dot" style="background:${s.c}"></span>${s.label}</span><b>${bs[s.id]||0}</b></div><div class="tr"><div class="fi" style="width:${(bs[s.id]||0)/L.length*100}%;background:${s.c}"></div></div></div>`).join('')}</div>
+ <h2>حسب نوع المخالفة</h2><div class="card">${bars(bt,L.length)}</div>
+ <h2>أكثر المواقع</h2><div class="card">${bars(Object.fromEntries(Object.entries(bp).sort((a,b)=>b[1]-a[1]).slice(0,8)),L.length)}</div>
+ <h2>خريطة توزيع البلاغات</h2><div id="map"></div><div class="hint">اضغط على أي نقطة لفتحها في خرائط قوقل</div>`;
+ drawMap()}
+function drawMap(){
+ const pts=R.filter(r=>inRange(r,$('anRange').value)&&r.lat!=null);
+ const all=pts.concat(places);
+ if(!all.length){$('map').innerHTML='<div class="hint" style="padding-top:120px">لا توجد مواقع مسجّلة بعد</div>';return}
+ let a=Math.min(...all.map(p=>p.lat)),b=Math.max(...all.map(p=>p.lat)),c=Math.min(...all.map(p=>p.lng)),d=Math.max(...all.map(p=>p.lng));
+ const ph=Math.max(b-a,.002),pw=Math.max(d-c,.002);a-=ph*.12;b+=ph*.12;c-=pw*.12;d+=pw*.12;
+ const X=g=>20+(g-c)/(d-c)*300,Y=g=>280-(g-a)/(b-a)*260;
+ let h='<svg viewBox="0 0 340 300" style="width:100%;height:100%"><rect width="340" height="300" fill="#0f1a23" rx="14"/>';
+ for(let i=1;i<4;i++){h+=`<line x1="${20+i*75}" y1="20" x2="${20+i*75}" y2="280" stroke="#22323f"/><line x1="20" y1="${20+i*65}" x2="320" y2="${20+i*65}" stroke="#22323f"/>`}
+ places.forEach(p=>{h+=`<a href="https://www.google.com/maps?q=${p.lat},${p.lng}" target="_blank"><text x="${X(p.lng)}" y="${Y(p.lat)}" fill="#4cc3e0" font-size="16" text-anchor="middle">★</text><text x="${X(p.lng)}" y="${Y(p.lat)+13}" fill="#8a9aa6" font-size="8" text-anchor="middle">${esc(p.name)}</text></a>`});
+ pts.forEach(r=>{h+=`<a href="${mapsUrl(r)}" target="_blank"><circle cx="${X(r.lng)}" cy="${Y(r.lat)}" r="8" fill="${S(r.sev).c}" stroke="#fff" stroke-width="2" opacity=".95"/></a>`});
+ h+='</svg>';$('map').innerHTML=h}
+
+/* ---------- المواقع ---------- */
+function savePlaces(){localStorage.setItem('rased_places',JSON.stringify(places));$('placeList').innerHTML=places.map(p=>`<option value="${esc(p.name)}">`).join('');if($('t-pl').classList.contains('on'))renderPlaces()}
+function renderPlaces(){
+ $('plList').innerHTML=places.length?places.map(p=>`<div class="card item" style="align-items:center"><div style="flex:1"><div class="t">⭐ ${esc(p.name)}</div><div class="m" dir="ltr" style="text-align:right">${p.lat}, ${p.lng} — ${p.r} م</div></div><div class="a"><a href="https://www.google.com/maps?q=${p.lat},${p.lng}" target="_blank">خريطة</a><button onclick="plDel(${p.id})">حذف</button></div></div>`).join(''):'<div class="hint">لا توجد مواقع محفوظة بعد</div>';
+ $('setUni').value=SET.uni;$('setDept').value=SET.dept;$('setSite').value=SET.site}
+function plHere(){navigator.geolocation?navigator.geolocation.getCurrentPosition(p=>{$('plCoords').value=p.coords.latitude.toFixed(6)+', '+p.coords.longitude.toFixed(6);toast('تم تحديد الموقع')},()=>toast('تعذّر تحديد الموقع'),{enableHighAccuracy:true,timeout:12000}):toast('غير مدعوم')}
+function plAdd(){const n=$('plName').value.trim(),c=parseCoords($('plCoords').value);if(!n||!c){toast('أدخل الاسم والإحداثيات');return}
+ places.push({id:Date.now(),name:n,lat:c.lat,lng:c.lng,r:+$('plR').value||80});savePlaces();$('plName').value='';$('plCoords').value=''}
+function plDel(id){places=places.filter(p=>p.id!==id);savePlaces()}
+function saveSet(){SET={uni:$('setUni').value,dept:$('setDept').value,site:$('setSite').value};localStorage.setItem('rased_set',JSON.stringify(SET));toast('تم الحفظ')}
+function exportBackup(){const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([JSON.stringify({reports:R,places,SET})],{type:'application/json'}));a.download='rased_backup_'+dayKey(Date.now())+'.json';a.click()}
+function importBackup(inp){const f=inp.files[0];if(!f)return;const fr=new FileReader();fr.onload=async()=>{try{const d=JSON.parse(fr.result);for(const r of d.reports||[])await tx('readwrite',s=>s.put(r));(d.places||[]).forEach(p=>{if(!places.some(x=>x.id===p.id))places.push(p)});if(d.SET){SET=d.SET;localStorage.setItem('rased_set',JSON.stringify(SET))}savePlaces();await load();renderPlaces();toast('تم الاستيراد')}catch{toast('ملف غير صالح')}};fr.readAsText(f)}
+
+/* ---------- تشغيل ---------- */
+savePlaces();load().then(chk);
+if("serviceWorker" in navigator&&location.protocol.startsWith("http"))navigator.serviceWorker.register("sw.js").catch(()=>{});
+</script>
+</body>
+</html>
